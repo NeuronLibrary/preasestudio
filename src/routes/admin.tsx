@@ -246,7 +246,7 @@ function OrderRow({ order }: { order: AdminOrder }) {
         )}
       </td>
       <td className="px-4 py-3">
-        <Select value={order.status} onValueChange={(v) => update.mutate({ status: v as OrderUpdate["status"] })} disabled={update.isPending}>
+        <Select value={order.status} onValueChange={(v) => update.mutate({ status: v as Database["public"]["Enums"]["order_status"] })} disabled={update.isPending}>
           <SelectTrigger className="h-9 w-32 rounded-full" aria-label="Ubah status">
             <SelectValue />
           </SelectTrigger>

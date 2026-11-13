@@ -23,11 +23,11 @@ export function ProductCard({ product }: { product: Product }) {
   const liked = wishlist.has(product.id);
 
   const quickAdd = () => {
-    if (inStock.length !== 1) {
+    const v = inStock[0];
+    if (inStock.length !== 1 || !v) {
       ui.openProduct(product);
       return;
     }
-    const v = inStock[0];
     const { added } = cart.add(
       {
         variant_id: v.id,

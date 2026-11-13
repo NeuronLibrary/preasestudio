@@ -164,7 +164,7 @@ export function Navbar() {
 
         <div
           className={cn(
-            "overflow-hidden border-foreground/5 transition-[max-height] duration-500 ease-apple md:hidden",
+            "overflow-hidden border-foreground/5 bg-background transition-[max-height] duration-500 ease-apple md:hidden",
             mobileOpen ? "max-h-96 border-t" : "max-h-0",
           )}
         >

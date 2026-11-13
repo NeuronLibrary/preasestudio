@@ -28,3 +28,9 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+- All data reads/writes go through the browser Supabase client with RLS (no server functions needed); orders only via RPC so the server computes price and stock.
+- Global UI state (cart, auth, modals, search) lives in context providers in `src/lib/` mounted once in `__root.tsx`; dialogs are rendered once there and opened via `useUI()`.
+- Supabase queries are defined as `queryOptions` in `src/lib/queries.ts` so cache keys stay consistent for invalidation.
+- Pure business rules (sorting, stock clamping, validation) stay in plain functions covered by `src/test/store-rules.test.ts`.
