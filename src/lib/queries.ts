@@ -5,14 +5,14 @@ import type { Tables } from "@/integrations/supabase/types";
 export type StoreSettings = Tables<"store_settings">;
 export type OrderDetail = Tables<"orders"> & { order_items: Tables<"order_items">[] };
 
-async function productsFetcher() {
-  const { data, error } = await supabase
+async function productsFetcher(includeInactive = false) {
+  let query = supabase
     .from("products")
     .select(
-      "id, slug, name, tag, description, price, rating_avg, review_count, is_featured, created_at, product_images(image_path, alt_text, sort_order), product_variants(id, color_name, color_hex, size, stock, sku), product_categories(category_id)",
-    )
-    .eq("is_active", true)
-    .order("created_at", { ascending: false });
+      "id, slug, name, tag, description, price, rating_avg, review_count, is_featured, is_active, created_at, product_images(id, image_path, alt_text, sort_order), product_variants(id, color_name, color_hex, size, stock, sku), product_categories(category_id)",
+    );
+  if (!includeInactive) query = query.eq("is_active", true);
+  const { data, error } = await query.order("created_at", { ascending: false });
   if (error) throw error;
   return (data ?? []).map((p) => ({
     ...p,
@@ -24,7 +24,10 @@ async function productsFetcher() {
 export type Product = Awaited<ReturnType<typeof productsFetcher>>[number];
 export type Variant = Product["product_variants"][number];
 
-export const productsQuery = queryOptions({ queryKey: ["products"], queryFn: productsFetcher });
+export const productsQuery = queryOptions({ queryKey: ["products"], queryFn: () => productsFetcher() });
+
+/** Admin list: includes hidden (inactive) products; RLS only returns them to admins. */
+export const adminProductsQuery = queryOptions({ queryKey: ["admin_products"], queryFn: () => productsFetcher(true) });
 
 export const categoriesQuery = queryOptions({
   queryKey: ["categories"],

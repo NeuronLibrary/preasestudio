@@ -44,6 +44,10 @@ export function friendlyError(err: unknown): string {
   if (/User already registered/i.test(msg)) return "Email ini sudah terdaftar. Silakan masuk.";
   if (/Email not confirmed/i.test(msg)) return "Email belum dikonfirmasi. Cek kotak masuk Anda.";
   if (/Password should be at least/i.test(msg)) return "Kata sandi minimal 6 karakter.";
+  if (/products_slug_key/i.test(msg)) return "Slug sudah dipakai produk lain. Ganti slug-nya.";
+  if (/product_variants_sku_key/i.test(msg)) return "SKU sudah dipakai produk lain. Ganti SKU-nya.";
+  if (/product_variants_product_id_color_name_size_key/i.test(msg)) return "Ada varian dengan warna & ukuran yang sama.";
+  if (/row-level security|permission denied/i.test(msg)) return "Akses ditolak. Pastikan akun Anda admin.";
   return msg;
 }
 

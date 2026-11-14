@@ -34,3 +34,4 @@ use the editor.
 - Global UI state (cart, auth, modals, search) lives in context providers in `src/lib/` mounted once in `__root.tsx`; dialogs are rendered once there and opened via `useUI()`.
 - Supabase queries are defined as `queryOptions` in `src/lib/queries.ts` so cache keys stay consistent for invalidation.
 - Pure business rules (sorting, stock clamping, validation) stay in plain functions covered by `src/test/store-rules.test.ts`.
+- Admin product CRUD lives in `src/lib/admin-products.ts` (photos uploaded first, then variants/images/categories synced by id diff from `src/lib/product-form.ts`) because the frozen schema has no transactional product RPC.

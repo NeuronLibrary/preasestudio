@@ -15,6 +15,8 @@ import { adminOrdersQuery, adminStatsQuery } from "@/lib/queries";
 import { formatDate, formatRupiah, friendlyError } from "@/lib/format";
 import { ErrorState, LoadingState, EmptyState } from "@/components/store/StateViews";
 import { StatusBadge } from "@/components/store/InvoiceDialog";
+import { ProductsManager } from "@/components/admin/ProductsManager";
+import { cn } from "@/lib/utils";
 
 type OrderUpdate = Database["public"]["Tables"]["orders"]["Update"];
 type AdminOrder = Awaited<ReturnType<typeof adminOrdersQuery.queryFn & {}>>[number];
@@ -23,7 +25,7 @@ export const Route = createFileRoute("/admin")({
   head: () => ({
     meta: [
       { title: "Dashboard Admin — PreaseStudios" },
-      { name: "description", content: "Kelola pesanan, pembayaran, dan pengiriman PreaseStudios." },
+      { name: "description", content: "Kelola produk, pesanan, pembayaran, dan pengiriman PreaseStudios." },
       { property: "og:title", content: "Dashboard Admin — PreaseStudios" },
       { property: "og:description", content: "Panel admin PreaseStudios." },
       { property: "og:type", content: "website" },
@@ -60,6 +62,7 @@ function AdminPage() {
 
 function Dashboard() {
   const stats = useQuery(adminStatsQuery);
+  const [tab, setTab] = useState<"pesanan" | "produk">("pesanan");
   const s = stats.data;
   const kpis = s
     ? [
@@ -133,7 +136,25 @@ function Dashboard() {
         </>
       )}
 
-      <OrdersTable />
+      <div role="tablist" aria-label="Kelola" className="mt-10 inline-flex rounded-full bg-secondary p-1">
+        {(["pesanan", "produk"] as const).map((t) => (
+          <button
+            key={t}
+            role="tab"
+            type="button"
+            aria-selected={tab === t}
+            onClick={() => setTab(t)}
+            className={cn(
+              "h-9 rounded-full px-5 text-sm font-medium transition-colors",
+              tab === t ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
+            )}
+          >
+            {t === "pesanan" ? "Pesanan" : "Produk"}
+          </button>
+        ))}
+      </div>
+
+      {tab === "pesanan" ? <OrdersTable /> : <ProductsManager />}
     </div>
   );
 }
@@ -150,7 +171,7 @@ function OrdersTable() {
   }, [orders.data, q]);
 
   return (
-    <section className="mt-10">
+    <section className="mt-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-2xl text-foreground">Pesanan</h2>
         <label className="relative w-full sm:w-72">
