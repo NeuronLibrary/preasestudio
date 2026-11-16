@@ -1,0 +1,1 @@
+CREATE POLICY storage_admin_select ON storage.objects FOR SELECT TO authenticated USING (bucket_id = 'product-images' AND public.is_admin());
