@@ -81,9 +81,27 @@ function Dashboard() {
   return (
     <div className="mx-auto max-w-[1180px] px-5 pb-24 pt-28 sm:px-6">
       <h1 className="text-headline text-foreground">Dashboard.</h1>
-      <p className="mt-2 text-muted-foreground">Ringkasan toko dan pengelolaan pesanan.</p>
+      <p className="mt-2 text-muted-foreground">Ringkasan toko, pengelolaan pesanan, dan produk.</p>
 
-      {stats.isError ? (
+      <div role="tablist" aria-label="Kelola" className="mt-6 inline-flex rounded-full bg-secondary p-1">
+        {(["pesanan", "produk"] as const).map((t) => (
+          <button
+            key={t}
+            role="tab"
+            type="button"
+            aria-selected={tab === t}
+            onClick={() => setTab(t)}
+            className={cn(
+              "h-9 rounded-full px-5 text-sm font-medium transition-colors",
+              tab === t ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
+            )}
+          >
+            {t === "pesanan" ? "Pesanan" : "Produk"}
+          </button>
+        ))}
+      </div>
+
+      {tab === "produk" ? null : stats.isError ? (
         <ErrorState className="mt-8" error={stats.error} onRetry={() => stats.refetch()} />
       ) : (
         <>
@@ -136,25 +154,10 @@ function Dashboard() {
         </>
       )}
 
-      <div role="tablist" aria-label="Kelola" className="mt-10 inline-flex rounded-full bg-secondary p-1">
-        {(["pesanan", "produk"] as const).map((t) => (
-          <button
-            key={t}
-            role="tab"
-            type="button"
-            aria-selected={tab === t}
-            onClick={() => setTab(t)}
-            className={cn(
-              "h-9 rounded-full px-5 text-sm font-medium transition-colors",
-              tab === t ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
-            )}
-          >
-            {t === "pesanan" ? "Pesanan" : "Produk"}
-          </button>
-        ))}
-      </div>
 
-      {tab === "pesanan" ? <OrdersTable /> : <ProductsManager />}
+      <div className={tab === "pesanan" ? "mt-10" : ""}>
+        {tab === "pesanan" ? <OrdersTable /> : <ProductsManager />}
+      </div>
     </div>
   );
 }
