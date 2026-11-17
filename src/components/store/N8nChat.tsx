@@ -14,6 +14,7 @@ export function N8nChat() {
       .then(({ createChat }) => {
         createChat({
           webhookUrl: N8N_WEBHOOK_URL,
+          loadPreviousSession: false,
           defaultLanguage: "en",
           initialMessages: ["Halo! 👋", "Ada yang bisa kami bantu hari ini?"],
           i18n: {
