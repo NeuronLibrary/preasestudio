@@ -98,11 +98,13 @@ export function ProductCard({ product }: { product: Product }) {
           <span className="font-medium text-foreground">{Number(product.rating_avg).toFixed(1)}</span>
           <span>({product.review_count} ulasan)</span>
         </div>
-        <div className="mt-auto flex items-center justify-between gap-2 pt-3">
-          <p className="text-base font-semibold text-foreground">{formatRupiah(product.price)}</p>
-          <Button size="sm" onClick={quickAdd} disabled={soldOut} variant={soldOut ? "secondary" : "default"}>
-            {soldOut ? "Habis" : (<><Plus /> Keranjang</>)}
-          </Button>
+        <div className="@container mt-auto pt-3">
+          <div className="flex flex-col gap-2 @[15rem]:flex-row @[15rem]:items-center @[15rem]:justify-between">
+            <p className="whitespace-nowrap text-base font-semibold text-foreground">{formatRupiah(product.price)}</p>
+            <Button size="sm" onClick={quickAdd} disabled={soldOut} variant={soldOut ? "secondary" : "default"} className="w-full @[15rem]:w-auto">
+              {soldOut ? "Habis" : (<><Plus /> Keranjang</>)}
+            </Button>
+          </div>
         </div>
       </div>
     </article>
