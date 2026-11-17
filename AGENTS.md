@@ -35,3 +35,4 @@ use the editor.
 - Supabase queries are defined as `queryOptions` in `src/lib/queries.ts` so cache keys stay consistent for invalidation.
 - Pure business rules (sorting, stock clamping, validation) stay in plain functions covered by `src/test/store-rules.test.ts`.
 - Admin product CRUD lives in `src/lib/admin-products.ts` (photos uploaded first, then variants/images/categories synced by id diff from `src/lib/product-form.ts`) because the frozen schema has no transactional product RPC.
+- The n8n chat bubble loads from the jsDelivr CDN inside `src/components/store/N8nChat.tsx` (useEffect dynamic import, mounted once in `__root.tsx`) because the bundle touches the DOM and must never run during SSR.

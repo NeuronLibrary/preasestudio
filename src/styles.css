@@ -178,6 +178,30 @@
   }
 }
 
+/* n8n chat bubble, themed to the store */
+:root {
+  --chat--color--primary: var(--primary);
+  --chat--color--primary-shade-50: var(--primary-hover);
+  --chat--color--primary--shade-100: var(--primary-hover);
+  --chat--color--secondary: var(--primary);
+  --chat--color-secondary-shade-50: var(--primary-hover);
+  --chat--color-dark: var(--foreground);
+  --chat--font-family: var(--font-sans);
+  --chat--border-radius: var(--radius-card-size);
+  --chat--header--background: var(--ink);
+  --chat--header--color: var(--ink-foreground);
+  --chat--toggle--background: var(--primary);
+  --chat--toggle--hover--background: var(--primary-hover);
+  --chat--toggle--active--background: var(--primary-hover);
+  --chat--toggle--color: var(--primary-foreground);
+  --chat--window--z-index: 60;
+}
+@media print {
+  #n8n-chat {
+    display: none !important;
+  }
+}
+
 /* Fade-up reveal */
 @keyframes fade-up {
   from {
